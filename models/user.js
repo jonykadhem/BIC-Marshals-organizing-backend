@@ -14,11 +14,14 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true,
         trim: true,
+        unique: true,
+        lowercase: true,
     },
     licenseNo: {
         type: Number,
         required: true,
         trim: true,
+        unique:true,
     },
     sector: {
         type: String,

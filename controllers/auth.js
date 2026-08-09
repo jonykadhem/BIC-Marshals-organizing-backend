@@ -8,11 +8,15 @@ const signUp = async (req, res) => {
     try {
         // check if user in database already
         const userInDatabase = await User.findOne({
-            licenseNo: req.body.licenseNo
+            $or: [
+                {licenseNo: req.body.licenseNo},
+                {email: req.body.email}
+
+            ]
         })
 
         if (userInDatabase) {
-            return res.status(409).json({ err: 'The user is available' })
+            return res.status(409).json({ err: 'A user with this email or license number already exists.' })
         }
 
         // creates user
@@ -25,8 +29,6 @@ const signUp = async (req, res) => {
             licenseNo: req.body.licenseNo,
             sector: req.body.sector,
             phone: req.body.phone,
-            role: req.body.role,
-            profileImage: req.body.profileImage,
         }
 
         const user = await User.create(userData)
@@ -47,7 +49,7 @@ const signIn = async (req, res) => {
     try {
         // check if user in database already
         const userInDatabase = await User.findOne({
-            fullName: req.body.fullName
+            email: req.body.email
         })
 
         if (!userInDatabase) {
