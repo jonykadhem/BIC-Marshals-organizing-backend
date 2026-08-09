@@ -23,17 +23,26 @@ const create = async (req, res) => {
 
 const allEvents = async (req, res) => {
     try {
-        const events = await Events.find({})
-        .populate("createdBy")
-        .sort({createdAt: "desc"})
+        const event = await Events.find({})
+            .populate("createdBy")
+            .sort({ createdAt: "desc" })
         res.status(201).json(event)
     } catch (error) {
-        res.status(500).json({ err: err.message })
+        res.status(500).json({ err: error.message })
     }
 }
 
 // const edit = async (req, res) => {
+//     try {
 
+//         const event = await Events.findByIdAndUpdate(req.params.eventId)
+
+//         if (!event.createdBy.equals(req.user))
+        
+//         res.status(201).json(event)
+//     } catch (error) {
+//         res.status(500).json({ err: error.message })
+//     }
 // }
 
 // const eventDetails = async (req, res) => {
@@ -45,7 +54,7 @@ const allEvents = async (req, res) => {
 // }
 
 module.exports = {
-    // edit,
+    edit,
     create,
     allEvents,
     // eventDetails
@@ -72,5 +81,5 @@ module.exports = {
 //     res.status(201).json(event)
 
 // } catch (error) {
-//     res.status(500).json({ err: err.message })
+//     res.status(500).json({ err: error.message })
 // }

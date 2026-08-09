@@ -38,7 +38,8 @@ app.get('/users', verifyToken, usersCtrl.index)
 //events routs 
 
 app.post('/events/new', verifyToken, eventCtrl.create)
-app.get('/events',  eventCtrl.allEvents)
+app.get('/events',eventCtrl.allEvents)
+app.get('/events/:eventId/edit',verifyToken,eventCtrl.edit)
 
 app.listen(PORT, () => {
   console.log(`The express app is ready on port ${PORT}! 😀`)
