@@ -32,7 +32,7 @@ const signUp = async (req, res) => {
         const user = await User.create(userData)
 
         // create the payload
-        const payload = { username: user.username, _id: user._id }
+        const payload = { fullName: user.fullName, _id: user._id }
 
         // create the token with payload + secret
         const token = jwt.sign({payload}, process.env.JWT_SECRET)
@@ -47,7 +47,7 @@ const signIn = async (req, res) => {
     try {
         // check if user in database already
         const userInDatabase = await User.findOne({
-            username: req.body.username
+            fullName: req.body.fullName
         })
 
         if (!userInDatabase) {
@@ -61,7 +61,7 @@ const signIn = async (req, res) => {
             return res.status(401).json({ err: 'Login failed. Please try again.' })
         }
 
-        const payload = { username: userInDatabase.username, _id: userInDatabase._id }
+        const payload = { fullName: userInDatabase.fullName, _id: userInDatabase._id }
         const token = jwt.sign({ payload }, process.env.JWT_SECRET)
 
         res.status(200).json({ token })
