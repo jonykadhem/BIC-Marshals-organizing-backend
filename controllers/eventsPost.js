@@ -56,7 +56,7 @@ const edit = async (req, res) => {
         if (!editevent) {
             return res.status(404).json({
                 err: "Event not found."
-            });
+            })
         }
 
         res.status(200).json(editevent)
@@ -70,10 +70,16 @@ const eventDetails = async (req, res) => {
     try {
 
         const event = await Events.findById(req.params.eventId)
-        
+        .populate("createdBy", "fullName")
+        if (!event) {
+            return res.status(404).json({
+                err: "Event not found."
+            })
+        }
 
-        res.status(20).json(event)
+        res.status(200).json(event)
     } catch (error) {
+        console.log(error)
         res.status(500).json({ err: error.message })
     }
 }
@@ -86,7 +92,7 @@ const deleteEvent = async (req, res) => {
         if (!deleteEvent) {
             return res.status(404).json({
                 err: "Event not found."
-            });
+            })
         }
 
         res.status(200).json(deleteEvent, "Event deleted successfully")
