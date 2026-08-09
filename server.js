@@ -41,6 +41,7 @@ app.get('/users', verifyToken, usersCtrl.index)
 app.post('/events/new', verifyToken, eventCtrl.create)
 app.get('/events',eventCtrl.allEvents)
 app.put('/events/:eventId/edit',verifyToken, permission,eventCtrl.edit)
+app.get('/events/:eventId',eventCtrl.eventDetails)
 app.delete('/events/:eventId',verifyToken, permission,eventCtrl.deleteEvent)
 
 app.listen(PORT, () => {

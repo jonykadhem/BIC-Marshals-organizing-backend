@@ -26,7 +26,7 @@ const allEvents = async (req, res) => {
         const event = await Events.find({})
             .populate("createdBy")
             .sort({ createdAt: "desc" })
-        res.status(201).json(event)
+        res.status(200).json(event)
     } catch (error) {
         res.status(500).json({ err: error.message })
     }
@@ -65,18 +65,41 @@ const edit = async (req, res) => {
     }
 }
 
-// const eventDetails = async (req, res) => {
+const eventDetails = async (req, res) => {
 
-// }
+    try {
+
+        const event = await Events.findById(req.params.eventId)
+        
+
+        res.status(20).json(event)
+    } catch (error) {
+        res.status(500).json({ err: error.message })
+    }
+}
 
 const deleteEvent = async (req, res) => {
+    try {
+        const event = await Events.findById(req.params.eventId)
 
+        const deleteEvent = await Events.findByIdAndDelete(req.params.eventId)
+        if (!deleteEvent) {
+            return res.status(404).json({
+                err: "Event not found."
+            });
+        }
+
+        res.status(200).json(deleteEvent, "Event deleted successfully")
+    } catch (error) {
+        res.status(500).json({ err: error.message })
+    }
 }
 
 module.exports = {
     edit,
     create,
     allEvents,
+    deleteEvent,
     eventDetails
 }
 
