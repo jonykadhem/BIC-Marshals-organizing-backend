@@ -32,18 +32,30 @@ const allEvents = async (req, res) => {
     }
 }
 
-// const edit = async (req, res) => {
-//     try {
-
-//         const event = await Events.findByIdAndUpdate(req.params.eventId)
-
-//         if (!event.createdBy.equals(req.user))
+const edit = async (req, res) => {
+    try {
         
-//         res.status(201).json(event)
-//     } catch (error) {
-//         res.status(500).json({ err: error.message })
-//     }
-// }
+
+        const editevent = await Events.findByIdAndUpdate(
+            req.params.eventId,
+            {
+                title: req.body.title,
+                description: req.body.description,
+                location: req.body.location,
+                eventDate: req.body.eventDate,
+                registrationDeadline: req.body.registrationDeadline,
+                maxMarshals: req.body.maxMarshals,
+                
+            },
+            {new: true}
+
+        )
+
+        res.status(200).json(editevent)
+    } catch (error) {
+        res.status(500).json({ err: error.message })
+    }
+}
 
 // const eventDetails = async (req, res) => {
 
