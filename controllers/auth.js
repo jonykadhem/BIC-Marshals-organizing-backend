@@ -49,18 +49,22 @@ const signIn = async (req, res) => {
     try {
         // check if user in database already
         const userInDatabase = await User.findOne({
-            email: req.body.email
+           $or: [
+                {email: req.body.identifier.toLowerCase()},
+                {licenseNo: req.body.identifier}
+
+            ]
         })
 
         if (!userInDatabase) {
-            return res.status(404).json({ err: 'User does not exist.' })
+            return res.status(404).json({ err: 'Invalid email/license number or password.' })
         }
 
         // check if the user's password is correct
         const validPassword = bcrypt.compareSync(req.body.password, userInDatabase.password)
 
         if (!validPassword) {
-            return res.status(401).json({ err: 'Login failed. Please try again.' })
+            return res.status(401).json({ err: 'Invalid email/license number or password..' })
         }
 
         const payload = { fullName: userInDatabase.fullName, _id: userInDatabase._id }
