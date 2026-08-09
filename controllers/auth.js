@@ -23,7 +23,7 @@ const signUp = async (req, res) => {
         const hashedPassword = bcrypt.hashSync(req.body.password, 10)
 
         const userData = {
-            fullName: req.body.username,
+            fullName: req.body.fullName,
             password: hashedPassword,
             email: req.body.email,
             licenseNo: req.body.licenseNo,
@@ -34,7 +34,7 @@ const signUp = async (req, res) => {
         const user = await User.create(userData)
 
         // create the payload
-        const payload = { fullName: user.fullName, _id: user._id }
+        const payload = { fullName: user.fullName, _id: user._id, role: user.role }
 
         // create the token with payload + secret
         const token = jwt.sign({payload}, process.env.JWT_SECRET)
@@ -50,8 +50,8 @@ const signIn = async (req, res) => {
         // check if user in database already
         const userInDatabase = await User.findOne({
            $or: [
-                {email: req.body.identifier.toLowerCase()},
-                {licenseNo: req.body.identifier}
+                {email: req.body.email.toLowerCase()},
+                {licenseNo: req.body.licenseNo}
 
             ]
         })
@@ -67,7 +67,7 @@ const signIn = async (req, res) => {
             return res.status(401).json({ err: 'Invalid email/license number or password..' })
         }
 
-        const payload = { fullName: userInDatabase.fullName, _id: userInDatabase._id }
+        const payload = { fullName: userInDatabase.fullName, _id: userInDatabase._id, role: userInDatabase.role }
         const token = jwt.sign({ payload }, process.env.JWT_SECRET)
 
         res.status(200).json({ token })
