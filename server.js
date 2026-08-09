@@ -16,6 +16,7 @@ const usersCtrl = require('./controllers/users')
 const eventCtrl = require('./controllers/eventsPost')
 
 const verifyToken = require('./middleware/verify-token')
+const permission = require('./middleware/permetions')
 
 mongoose.connect(process.env.MONGODB_URI)
 
@@ -39,7 +40,8 @@ app.get('/users', verifyToken, usersCtrl.index)
 
 app.post('/events/new', verifyToken, eventCtrl.create)
 app.get('/events',eventCtrl.allEvents)
-app.get('/events/:eventId/edit',verifyToken,eventCtrl.edit)
+app.put('/events/:eventId/edit',verifyToken, permission,eventCtrl.edit)
+app.delete('/events/:eventId',verifyToken, permission,eventCtrl.deleteEvent)
 
 app.listen(PORT, () => {
   console.log(`The express app is ready on port ${PORT}! 😀`)

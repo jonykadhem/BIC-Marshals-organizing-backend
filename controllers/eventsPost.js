@@ -34,7 +34,7 @@ const allEvents = async (req, res) => {
 
 const edit = async (req, res) => {
     try {
-        
+
 
         const editevent = await Events.findByIdAndUpdate(
             req.params.eventId,
@@ -45,11 +45,19 @@ const edit = async (req, res) => {
                 eventDate: req.body.eventDate,
                 registrationDeadline: req.body.registrationDeadline,
                 maxMarshals: req.body.maxMarshals,
-                
+
             },
-            {new: true}
+            {
+                new: true,
+                runValidators: true,
+            }
 
         )
+        if (!editevent) {
+            return res.status(404).json({
+                err: "Event not found."
+            });
+        }
 
         res.status(200).json(editevent)
     } catch (error) {
@@ -61,15 +69,15 @@ const edit = async (req, res) => {
 
 // }
 
-// const deleteEvent = async (req, res) => {
+const deleteEvent = async (req, res) => {
 
-// }
+}
 
 module.exports = {
     edit,
     create,
     allEvents,
-    // eventDetails
+    eventDetails
 }
 
 
