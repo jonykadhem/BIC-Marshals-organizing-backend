@@ -19,10 +19,14 @@ const signUp = async (req, res) => {
         const hashedPassword = bcrypt.hashSync(req.body.password, 10)
 
         const userData = {
-            username: req.body.username,
+            fullName: req.body.username,
             password: hashedPassword,
-            licenseNo: req.body.licenseNo,
             email: req.body.email,
+            licenseNo: req.body.licenseNo,
+            sector: req.body.sector,
+            phone: req.body.phone,
+            role: req.body.role,
+            profileImage: req.body.profileImage,
         }
 
         const user = await User.create(userData)
