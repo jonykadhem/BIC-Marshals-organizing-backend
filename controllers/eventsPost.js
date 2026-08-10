@@ -1,6 +1,7 @@
 const express = require("express")
 
 const Events = require('../models/events')
+const Registration = require("../models/registration");
 
 
 const create = async (req, res) => {
@@ -94,6 +95,9 @@ const deleteEvent = async (req, res) => {
                 err: "Event not found."
             })
         }
+        await Registration.deleteMany({
+            event: deleteEvent._id
+        })
 
         res.status(200).json(deleteEvent, "Event deleted successfully")
     } catch (error) {
