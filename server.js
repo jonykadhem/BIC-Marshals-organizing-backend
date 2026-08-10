@@ -14,6 +14,7 @@ const PORT = process.env.PORT ? process.env.PORT : "3000"
 const authCtrl = require('./controllers/auth')
 const usersCtrl = require('./controllers/users')
 const eventCtrl = require('./controllers/eventsPost')
+const registrationtrl = require('./controllers/registrationEve')
 
 const verifyToken = require('./middleware/verify-token')
 const permission = require('./middleware/permetions')
@@ -43,6 +44,10 @@ app.get('/events',eventCtrl.allEvents)
 app.put('/events/:eventId/edit',verifyToken, permission,eventCtrl.edit)
 app.get('/events/:eventId',eventCtrl.eventDetails)
 app.delete('/events/:eventId',verifyToken, permission,eventCtrl.deleteEvent)
+
+//registaration routs 
+
+app.post('/events/:eventId/registrations',verifyToken,registrationtrl.registrationForEvent)
 
 app.listen(PORT, () => {
   console.log(`The express app is ready on port ${PORT}! 😀`)
