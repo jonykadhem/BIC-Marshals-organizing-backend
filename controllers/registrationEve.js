@@ -17,7 +17,14 @@ const registrationForEvent = async (req, res) => {
         if (new Date() > event.registrationDeadline){
             return res.status(400).json({err: "The registration deadline has passed."})
         }
-        if(event.maxMarshals)
+
+        const registrationCount = await Registration.countDocuments({event: event._id})
+
+        
+
+        if(registrationCount >= event.maxMarshals){
+            return res.status(400).json({err: "The event is full"})
+        }
 
         
     } catch (error) {
