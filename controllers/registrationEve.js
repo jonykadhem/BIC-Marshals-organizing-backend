@@ -20,14 +20,37 @@ const registrationForEvent = async (req, res) => {
 
         const registrationCount = await Registration.countDocuments({event: event._id})
 
-        
-
         if(registrationCount >= event.maxMarshals){
             return res.status(400).json({err: "The event is full"})
         }
-
         
+        const existingRegistration = await Registration.findOne({
+            user: req.user._id,
+            event: req.params.eventId
+        })
+        
+        if (existingRegistration){
+            return res.status(400).json({err: "You are alrady regesterd for the event"})
+        }
+        
+        const registration = await Registration.create({
+            user: req.user._id,
+            event: req.params.eventId,
+            positions: req.body.positions
+        })
+
+        res.status(201).json({
+            message:  "You have registred seccefully",
+            registration
+
+        })
+
     } catch (error) {
+        if (error.name === "ValidationError") {
+        return res.status(400).json({
+            err: error.message
+        });
+    }
         res.status(500).json({ err: error.message })
     }
 
