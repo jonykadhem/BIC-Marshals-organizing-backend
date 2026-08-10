@@ -49,6 +49,9 @@ app.delete('/events/:eventId',verifyToken, permission,eventCtrl.deleteEvent)
 //registaration routs 
 
 app.post('/events/:eventId/registrations',verifyToken,registrationtrl.registrationForEvent)
+app.get('/events/:eventId/registrations',verifyToken,registrationtrl.eventRegistrations )
+app.put('/events/:registrationId/assign',verifyToken,permission,registrationtrl.assignPost )
+app.put('/events/:registrationId/cancel',verifyToken,registrationtrl.canselRegistration )
 
 app.listen(PORT, () => {
   console.log(`The express app is ready on port ${PORT}! 😀`)
