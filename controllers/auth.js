@@ -50,8 +50,8 @@ const signIn = async (req, res) => {
         // check if user in database already
         const userInDatabase = await User.findOne({
            $or: [
-                {email: req.body.email.toLowerCase()},
-                {licenseNo: req.body.licenseNo}
+                {email: req.body.identifier.toLowerCase()},
+                {licenseNo: req.body.identifier}
 
             ]
         })
