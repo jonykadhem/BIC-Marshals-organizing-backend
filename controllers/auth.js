@@ -9,8 +9,8 @@ const signUp = async (req, res) => {
         // check if user in database already
         const userInDatabase = await User.findOne({
             $or: [
-                {licenseNo: req.body.licenseNo},
-                {email: req.body.email}
+                { licenseNo: req.body.licenseNo },
+                { email: req.body.email }
 
             ]
         })
@@ -31,16 +31,24 @@ const signUp = async (req, res) => {
             phone: req.body.phone,
         }
 
+        const passwordRegex =
+            /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*]).{8,}$/
+
+        if (!passwordRegex.test(req.body.password)) {
+            return res.status(400).json({
+                err: "Password must be at least 8 characters and contain an uppercase letter, lowercase letter, number, and special character."
+            })
+        }
         const user = await User.create(userData)
 
         // create the payload
         const payload = { fullName: user.fullName, _id: user._id, role: user.role }
 
         // create the token with payload + secret
-        const token = jwt.sign({payload}, process.env.JWT_SECRET)
+        const token = jwt.sign({ payload }, process.env.JWT_SECRET)
 
         res.status(201).json({ token })
-    } catch(err) {
+    } catch (err) {
         res.status(400).json({ err: err.message })
     }
 }
@@ -49,9 +57,9 @@ const signIn = async (req, res) => {
     try {
         // check if user in database already
         const userInDatabase = await User.findOne({
-           $or: [
-                {email: req.body.identifier.toLowerCase()},
-                {licenseNo: req.body.identifier}
+            $or: [
+                { email: req.body.identifier.toLowerCase() },
+                { licenseNo: req.body.identifier }
 
             ]
         })
