@@ -42,7 +42,7 @@ app.get('/users', verifyToken, usersCtrl.index)
 app.post('/events/new', verifyToken, eventCtrl.create)
 app.get('/events',eventCtrl.allEvents)
 app.put('/events/:eventId/edit',verifyToken, permission,eventCtrl.edit)
-app.get('/events/myevents',verifyToken,registrationtrl.myRegistration)
+app.get('/events/my-events',verifyToken,registrationtrl.myRegistration)
 app.get('/events/:eventId',eventCtrl.eventDetails)
 app.delete('/events/:eventId',verifyToken, permission,eventCtrl.deleteEvent)
 
@@ -52,7 +52,7 @@ app.post('/events/:eventId/registrations',verifyToken,registrationtrl.registrati
 app.get('/events/:eventId/registrations',verifyToken,registrationtrl.eventRegistrations )
 app.put('/events/:registrationId/assign',verifyToken,permission,registrationtrl.assignPost )
 app.put('/events/:registrationId/cancel',verifyToken,registrationtrl.canselRegistration )
-
+app.get("/registrations/my-events/:eventId",verifyToken,registrationtrl.myRegistrationForEvent)
 app.listen(PORT, () => {
   console.log(`The express app is ready on port ${PORT}! 😀`)
 })

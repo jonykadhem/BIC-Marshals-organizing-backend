@@ -129,6 +129,28 @@ const canselRegistration = async (req, res) => {
         res.status(500).json({ err: error.message })
     }
 }
+const myRegistrationForEvent = async (req, res) => {
+    try {
+        const registration = await Registration.findOne({
+            user: req.user._id,
+            event: req.params.eventId
+        })
+        .populate("event")
+
+        if (!registration) {
+            return res.status(404).json({
+                err: "You are not registered for this event."
+            })
+        }
+
+        res.status(200).json(registration)
+
+    } catch (error) {
+        res.status(500).json({
+            err: error.message
+        })
+    }
+}
 
 
 
@@ -137,7 +159,8 @@ module.exports = {
     myRegistration,
     canselRegistration,
     eventRegistrations,
-    assignPost
+    assignPost,
+    myRegistrationForEvent
 }
 
 
