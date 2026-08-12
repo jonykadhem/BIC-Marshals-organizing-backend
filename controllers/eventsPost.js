@@ -9,7 +9,7 @@ const create = async (req, res) => {
 
     try {
         req.body.createdBy = req._id
-        if (req.user.role !== 'admin' && req.user.role !== 'orgnizer') {
+        if (req.user.role !== 'admin' && req.user.role !== 'organizer') {
             return res.status(403).json({ err: "Only administrators can create events." })
         }
         const eventData = { ...req.body, createdBy: req.user._id }
