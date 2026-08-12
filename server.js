@@ -15,10 +15,12 @@ const authCtrl = require('./controllers/auth')
 const usersCtrl = require('./controllers/users')
 const eventCtrl = require('./controllers/eventsPost')
 const registrationtrl = require('./controllers/registrationEve')
+const adminCtrl = require('./controllers/admin')
 
 const verifyToken = require('./middleware/verify-token')
 const permission = require('./middleware/permetions')
 const registrationPermission = require('./middleware/registrationPermission')
+const adminPermission = require("./middleware/adminPermission")
 
 mongoose.connect(process.env.MONGODB_URI)
 
@@ -54,6 +56,12 @@ app.get('/events/:eventId/registrations',verifyToken,registrationtrl.eventRegist
 app.put('/events/:registrationId/assign',verifyToken,registrationPermission,registrationtrl.assignPost )
 app.put('/events/:registrationId/cancel',verifyToken,registrationtrl.canselRegistration )
 app.get("/registrations/my-events/:eventId",verifyToken,registrationtrl.myRegistrationForEvent)
+
+//admin routes
+app.get("/admin/dashboard", verifyToken,adminPermission, adminCtrl.dashboard)
+app.get("/admin/users", verifyToken,adminPermission, adminCtrl.getUsers)
+app.put("/admin/users/:userId/role", verifyToken,adminPermission, adminCtrl.updateUserRole)
+
 app.listen(PORT, () => {
   console.log(`The express app is ready on port ${PORT}! 😀`)
 })
