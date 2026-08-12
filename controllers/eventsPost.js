@@ -78,8 +78,13 @@ const eventDetails = async (req, res) => {
                 err: "Event not found."
             })
         }
+        const registrationCount = await Registration.countDocuments({
+            event: event._id,
+            status: { $ne: "Cancelled" }
+        })
 
-        res.status(200).json(event)
+        res.status(200).json({...event.toObject(),
+            registrationCount})
     } catch (error) {
         console.log(error)
         res.status(500).json({ err: error.message })
