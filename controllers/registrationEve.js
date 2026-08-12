@@ -18,7 +18,9 @@ const registrationForEvent = async (req, res) => {
             return res.status(400).json({ err: "The registration deadline has passed." })
         }
 
-        const registrationCount = await Registration.countDocuments({ event: event._id })
+        const registrationCount = await Registration.countDocuments({ event: event._id,
+            status: { $ne: "Cancelled" }
+         })
 
         if (registrationCount >= event.maxMarshals) {
             return res.status(400).json({ err: "The event is full" })
@@ -26,11 +28,31 @@ const registrationForEvent = async (req, res) => {
 
         const existingRegistration = await Registration.findOne({
             user: req.user._id,
-            event: req.params.eventId
+            event: req.params.eventId,
+            status: { $ne: "Cancelled" }
         })
 
         if (existingRegistration) {
             return res.status(400).json({ err: "You are alrady regesterd for the event" })
+        }
+        const cancelledRegistration = await Registration.findOne({
+            user: req.user._id,
+            event: req.params.eventId,
+            status: "Cancelled"
+        })
+
+        if (cancelledRegistration) {
+
+            cancelledRegistration.positions = req.body.positions
+            cancelledRegistration.status = "Registered"
+            cancelledRegistration.assignedPost = null
+
+            await cancelledRegistration.save()
+
+            return res.status(200).json({
+                message: "You have registered successfully",
+                registration: cancelledRegistration
+            })
         }
 
         const registration = await Registration.create({
@@ -134,7 +156,8 @@ const myRegistrationForEvent = async (req, res) => {
     try {
         const registration = await Registration.findOne({
             user: req.user._id,
-            event: req.params.eventId
+            event: req.params.eventId,
+            
         })
         .populate("event")
 

@@ -55,7 +55,7 @@ app.post('/events/:eventId/registrations',verifyToken,registrationtrl.registrati
 app.get('/events/:eventId/registrations',verifyToken,registrationtrl.eventRegistrations )
 app.put('/events/:registrationId/assign',verifyToken,registrationPermission,registrationtrl.assignPost )
 app.put('/events/:registrationId/cancel',verifyToken,registrationtrl.canselRegistration )
-app.get("/registrations/my-events/:eventId",verifyToken,registrationtrl.myRegistrationForEvent)
+app.get('/registrations/my-events/:eventId',verifyToken,registrationtrl.myRegistrationForEvent)
 
 //admin routes
 app.get("/admin/dashboard", verifyToken,adminPermission, adminCtrl.dashboard)
