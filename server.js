@@ -18,6 +18,7 @@ const registrationtrl = require('./controllers/registrationEve')
 
 const verifyToken = require('./middleware/verify-token')
 const permission = require('./middleware/permetions')
+const registrationPermission = require('./middleware/registrationPermission')
 
 mongoose.connect(process.env.MONGODB_URI)
 
@@ -50,7 +51,7 @@ app.delete('/events/:eventId',verifyToken, permission,eventCtrl.deleteEvent)
 
 app.post('/events/:eventId/registrations',verifyToken,registrationtrl.registrationForEvent)
 app.get('/events/:eventId/registrations',verifyToken,registrationtrl.eventRegistrations )
-app.put('/events/:registrationId/assign',verifyToken,permission,registrationtrl.assignPost )
+app.put('/events/:registrationId/assign',verifyToken,registrationPermission,registrationtrl.assignPost )
 app.put('/events/:registrationId/cancel',verifyToken,registrationtrl.canselRegistration )
 app.get("/registrations/my-events/:eventId",verifyToken,registrationtrl.myRegistrationForEvent)
 app.listen(PORT, () => {

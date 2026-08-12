@@ -90,7 +90,8 @@ const assignPost = async (req, res) => {
         const assign = await Registration.findByIdAndUpdate(
             req.params.registrationId,
             {
-                assignedPost: req.body.assignedPost
+                assignedPost: req.body.assignedPost,
+                status: "Assigned"
             },
             { new: true }
         )

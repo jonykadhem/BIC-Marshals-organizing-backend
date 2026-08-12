@@ -29,6 +29,10 @@ const registrationSchema = new mongoose.Schema({
             message: "Select at least one position."
         }
     },
+    assignedPosition: {
+        type: String,
+        default: null,
+    },
     assignedPost: {
         type: String,
         default: null,
