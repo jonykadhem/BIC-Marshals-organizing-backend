@@ -12,7 +12,7 @@ The backend API for the BIC Marshals Management System. It handles users, events
 
 ## Getting Started
 ### Try The App
-visit [Monthly Outing](https://monthly-outing-1.onrender.com)
+visit [Monthly Outing](https://bic-marshals-events-organizing.netlify.app/)
 
 ### How To Use
 1. Install the required packages.
